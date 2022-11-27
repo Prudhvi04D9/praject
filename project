@@ -1,0 +1,49 @@
+import pandas as pd
+import numpy as np
+url="https://raw.githubusercontent.com/SR1608/Datasets/main/covid-data.csv"
+d=pd.read_csv(url)
+print(d)
+row_count = len(d)
+col_count = len(d.columns)
+row_count
+col_count
+datatypesfind=d.dtypes
+print(datatypesfind)
+df = pd.DataFrame(d)
+d.info()
+d.describe()
+df = pd.DataFrame(d)
+df.location.unique()
+df['continent'].value_counts().idxmax()
+df1 = df['total_cases'].max()
+df2 = df["total_cases"].mean()
+print(df1)
+print(df2)
+df.total_deaths.quantile(0.25)
+df.total_deaths.quantile(0.5)
+df.total_deaths.quantile(0.75)
+df3 = df['human_development_index'].max()
+print(df3)
+df4 = df['gdp_per_capita'].min()
+print(df4)
+d.head(57394)
+d[["continent","location","date","total_cases","total_deaths","gdp_per_capita","human_development_index"]].head(57394)
+display(df.drop_duplicates())
+df.isnull()
+df[df.continent.notna()]
+df.fillna(0)
+d["date"]= pd.to_datetime(d["date"])
+d.head(57394)
+d['month'] = pd.DatetimeIndex(d['date']).month
+d.head(57394)
+df.groupby(['continent'], sort=False).max().reset_index()
+df_groupby=df.groupby(['continent'], sort=False).max().reset_index().copy()
+df_groupby.head(6)
+(df_groupby.groupby(["total_deaths", "total_cases"]).size()/df_groupby.groupby(["total_cases"]).size()).rename('ratio').reset_index()
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.distplot(df_groupby['gdp_per_capita'],kde=False)
+plt.scatter(x=df['total_cases'],y=df['gdp_per_capita'])
+plt.xlabel('total_cases')
+plt.ylabel('gdp_per_capita')
+df_groupby.to_csv('project.csv')
